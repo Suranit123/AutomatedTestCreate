@@ -1,0 +1,33 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+import time
+
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+
+driver.get("https://dev.app.agnoshealth.com/ai_dashboard/agnos/sign_up/")
+
+time.sleep(10)
+
+email_field = driver.find_element(By.ID, "email")
+email_field.send_keys("testuser@example.com")
+
+password_field = driver.find_element(By.ID, "password")
+password_field.send_keys("Test@1234")
+
+confirm_password_field = driver.find_element(By.ID, "confirm_password")
+confirm_password_field.send_keys("Test@1234")
+
+if password_field.get_attribute("value") == confirm_password_field.get_attribute("value"):
+    print("Passwords match!")
+else:
+    print("Passwords do not match.")
+
+sign_up_button = driver.find_element(By.ID, "sign_up_button")
+sign_up_button.click()
+
+time.sleep(10)
+
+driver.quit()
