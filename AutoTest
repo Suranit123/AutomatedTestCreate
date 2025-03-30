@@ -1,18 +1,16 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 driver.get("https://dev.app.agnoshealth.com/ai_dashboard/agnos/sign_up/")
 
 wait = WebDriverWait(driver, 10)
 
-email_field = wait.until(EC.presence_of_element_located((By.ID, "email")))
+email_field = wait.until(EC.visibility_of_element_located((By.ID, "email")))
 email_field.send_keys("Suranit123@gmail.com")
 
 password_field = driver.find_element(By.ID, "password")
@@ -26,13 +24,13 @@ if password_field.get_attribute("value") == confirm_password_field.get_attribute
 else:
     print("Passwords do not match.")
 
-confirm_button = driver.find_element(By.ID, "confirm")
+confirm_button = driver.find_element(By.CLASS_NAME, "css-j6xc82")
 confirm_button.click()
 
 try:
     success_message = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "success-message")))
     print("Registration Successful: " + success_message.text)
-except:
-    print("Registration failed or success message not found.")
+except Exception as e:
+    print("Registration failed or success message not found. Error:", e)
 
 driver.quit()
